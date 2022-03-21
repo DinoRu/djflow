@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}blog-details {% endblock %}
+
+{% block content %}
+<article class="container">
+    <div class="col-md-12">
+        <h1 class="fs-1 fw-bolder text-center mt-5">{{ post.title }}</h1>
+        <p class="text-center">
+            <small>
+                by {{ post.user.username }} · 
+                {{ post.created_on.date }} | &nbsp;
+                Categories:&nbsp;
+                {% for category in post.categories.all %}
+                    <a href="{% url 'blog:category' category.name %}" class="text-decoration-none badge bg-primary">
+                        {{ category.name }}
+                    </a>
+                {% endfor %}
+            </small>
+        </p>
+        <hr />
+        <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no_img.png" %}{% endif %}" height="500px" width="100%">
+        <p>{{ post.body|safe}}</p>
+        <p>
+            <strong>Tags:</strong>
+            {% for tag in post.tags.all %}
+                <a href="{% url 'blog:post_tag' tag.slug %}" class="link-light text-decoration-none badge bg-secondary">
+                    {{ tag.name }}
+                </a>
+            {% endfor %}
+        </p>
+        <br/>
+        <hr />
+        <h3 class="text-center">Leave a comment:</h3>
+        <form method="POST" action="" class="row gy-2 mt-3">
+            {% csrf_token %}
+            <div class="col-12 form-group mt-3">
+                {{ form.body }}
+            </div>
+            <div class="col-6 form-group">
+                <p>{{ form.author }}</p>
+            </div>
+            <div class="col-6 form-group">
+                <p>{{ form.email }}</p>
+            </div>
+            
+            <button type="submit" class="btn btn-secondary mt-3">Comment</button>
+        </form>
+    
+        {% with comments.count as total_comments %}
+            <h3 class="mt-5">
+                {{ total_comments }} comment{{ total_comments|pluralize }}
+            </h3>
+        {% endwith %}
+        {% if not post.comments.all %}
+            No comments yet
+        
+        {% else %}
+            {% for comment in post.get_comments %}
+                {% include 'blog/comment.html' with comment=comment %}
+            {% endfor %}
+        {% endif %}
+        
+        <div class="my-3 fw-bolder">
+            <h3>Similar Posts</h3>
+        </div>
+        <div class="row">
+            {% for post in similar_posts %}
+            <div class="col-md-6 col-sm-6 col-lg-4 mb-3">
+                <div class="card border-0">
+                    <div class="ratio ratio-16x9">
+                       <img src="{% if post.image %}{{ post.image.url }}{% else %}{% static "img/no_img.png" %}{% endif %}">
+                    </div>
+                    <div class="card-body p-0 m-0 mt-2">
+                        <h4 class="card-title mt-3 py-0">
+                            <a href="{{ post.get_absolute_url }}" class="text-center text-decoration-none text-dark">{{ post.title }}</a>
+                        </h4>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <span>{{post.created_on.date}} by
+                                    <strong>{{ post.user.username }}</strong></span>
+                                <!-- <a href="" class="badge badge-light text-muted">{{post.tags.all|join:" "}}</a> -->
+                            </small>
+                        </p>
+                        <!-- <p>{{post.body|truncatechars:100|linebreaks}}</p> -->
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">There is no similar post yet</p>
+            {% endfor %}
+        </div>
+    </div>
+</article>
+{% endblock %}
