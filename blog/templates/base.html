@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="{% static 'img/djicon.png' %}">
     <title>djflow-{% block title %}{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
@@ -30,25 +31,6 @@
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'blog2:post_list' %}">Django</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/tag/tips/' %}active{% endif %}" href="{{ request.scheme }}://{{ request.get_host }}/tag/tips/">Tips</a>
-                  </li>
-                  
-                  <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Tutorial
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li>
-                      <a class="dropdown-item {% if request.path == '/tag/python/' %}active{% endif %}" href="{{ request.scheme }}://{{ request.get_host }}/tag/python/">Python</a>
-                    </li>
-                    
-                    <li>
-                      <a class="dropdown-item {% if request.path == '/tag/django/' %}active{% endif %}" href="{{ request.scheme }}://{{ request.get_host }}/tag/django/">Django</a>
-                    </li>
-                  
-                  </ul>
-                </li>
                 <li class="nav-item">
                   <a class="nav-link {% if request.path == '/tag/tips/' %}active{% endif %}" href="{% url 'blog:index' %}">Python</a>
                 </li>
@@ -86,6 +68,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
+        <script id="dsq-count-scr" src="//django-flow.disqus.com/count.js" async></script>
         <script src="{% static 'js/main.js' %}"></script>
     </body>
 </html>

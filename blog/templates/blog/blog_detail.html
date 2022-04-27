@@ -32,36 +32,8 @@
         </p>
         <br/>
         <hr />
-        <h3 class="text-center">Leave a comment:</h3>
-        <form method="POST" action="" class="row gy-2 mt-3">
-            {% csrf_token %}
-            <div class="col-12 form-group mt-3">
-                {{ form.body }}
-            </div>
-            <div class="col-6 form-group">
-                <p>{{ form.author }}</p>
-            </div>
-            <div class="col-6 form-group">
-                <p>{{ form.email }}</p>
-            </div>
-            
-            <button type="submit" class="btn btn-secondary mt-3">Comment</button>
-        </form>
-    
-        {% with comments.count as total_comments %}
-            <h3 class="mt-5">
-                {{ total_comments }} comment{{ total_comments|pluralize }}
-            </h3>
-        {% endwith %}
-        {% if not post.comments.all %}
-            No comments yet
-        
-        {% else %}
-            {% for comment in post.get_comments %}
-                {% include 'blog/comment.html' with comment=comment %}
-            {% endfor %}
-        {% endif %}
-        
+        {% include 'comments.html' with url=post.pk %}
+        <hr />
         <div class="my-3 fw-bolder">
             <h3>Similar Posts</h3>
         </div>
