@@ -6,6 +6,10 @@ from blog2.forms import CommentForm
 from .models import Comment, Post
 
 
+def about(request):
+    return render(request, 'blog2/about.html')
+
+
 def post_list(request, tag_slug=None):
     posts = Post.published.all()
     paginator = Paginator(posts, 12)
@@ -20,11 +24,12 @@ def post_list(request, tag_slug=None):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    
+
     # Search
     query = request.GET.get('q')
     if query:
-        posts = Post.published.filter(Q(title__icontains=query) | Q(tags__name__icontains=query))
+        posts = Post.published.filter(
+            Q(title__icontains=query) | Q(tags__name__icontains=query))
 
     context = {
         'posts': posts,
@@ -56,8 +61,10 @@ def post_detail(request, post):
     else:
         comment_form = CommentForm()
     post_tags_ids = post.tags.values_list('id', flat=True)
-    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
-    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:6]
+    similar_posts = Post.published.filter(
+        tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count(
+        'tags')).order_by('-same_tags', '-publish')[:6]
     context = {
         'post': post,
         'comment_form': comment_form,
@@ -65,6 +72,7 @@ def post_detail(request, post):
         'similar_posts': similar_posts,
     }
     return render(request, 'blog2/post_detail.html', context)
+
 
 def reply_page(request):
     if request.method == 'POST':

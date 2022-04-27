@@ -5,10 +5,12 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from blog2 import views
 from blog2.sitemaps import PostSitemap
+from blog.sitemaps import ArticleSitemap
 
 
 sitemaps = {
     'posts': PostSitemap,
+    'articles': ArticleSitemap,
 }
 
 urlpatterns = [
